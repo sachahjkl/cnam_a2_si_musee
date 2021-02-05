@@ -1,0 +1,16 @@
+<div class="card mt-2 shadow {{ card_classes|default("") }}">
+    {% if card_header is defined %}
+        <h5 class="card-header">{% block header %}Header{% endblock %}</h5>
+    {% endif %}
+    <div class="card-body">
+        {% if card_title is defined %}
+            <h5 class="card-title">{% block title %}Title{% endblock %}</h5>
+        {% endif %}
+        <h6 class="card-subtitle mb-2 text-muted"></h6>
+        <p class="card-text">
+            {% block text %}
+                Texte
+            {% endblock %}
+        </p>
+    </div>
+</div>

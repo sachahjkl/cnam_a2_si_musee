@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title|default("Dashboard") }}{% endblock %}
+{% block body %}
+    {% embed "partials/_navbar.html.twig" %}
+    {% endembed %}
+    {% embed "partials/_container_fluid.html.twig" %}
+        {% block container_fluid %}
+            <div class="row mx-0">
+                <div class=" col-12 px-0 p-md-2">
+                    {% embed "partials/_card.html.twig" with {card_header:1} %}
+                        {% block header %}
+                            <b>Musée Lookout</b> : Découvrez les musées du monde
+                        {% endblock %}
+                        {% block text %}
+                        {% endblock %}
+                    {% endembed %}
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

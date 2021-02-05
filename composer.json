@@ -1,13 +1,20 @@
 {
     "type": "project",
     "license": "proprietary",
-    "authors": ["Sacha FROMENT"],
+    "authors": [
+        {
+            "name": "Sacha FROMENT",
+            "email": "sacha@hjkl.it",
+            "role": "owner"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "amphp/http-client": "^4.5",
         "composer/package-versions-deprecated": "1.11.99.1",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.2",

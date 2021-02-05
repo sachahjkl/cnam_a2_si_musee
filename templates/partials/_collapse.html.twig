@@ -1,0 +1,18 @@
+<div class="card {{ color|default("bg-light") }}"
+     {% if color_css is defined %}style="background-color: {{ color_css }}"{% endif %}>
+    <div class="card-header" id="heading_{{ id }}">
+        <h5 class="mb-0">
+            <button class="btn collapsed {{ color_btn|default }}" type="button" data-toggle="collapse" data-target="#collapse_{{ id }}"
+                    aria-expanded="true" aria-controls="collapse_{{ id }}">
+                {% block button %}Bouton{% endblock %}
+            </button>
+        </h5>
+    </div>
+
+    <div id="collapse_{{ id }}" class="collapse " aria-labelledby="heading_{{ id }}"
+         data-parent="#{{ parent|default("") }}">
+        <div class="card-body">
+            {% block text %}Texte{% endblock %}
+        </div>
+    </div>
+</div>

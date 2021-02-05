@@ -1,0 +1,12 @@
+body {
+    background: transparent;
+}
+
+html {
+    background: url("../images/bg.jpg") no-repeat center fixed;
+    background-size: cover;
+}
+
+.wide-dropdown {
+    min-width: 400px;
+}

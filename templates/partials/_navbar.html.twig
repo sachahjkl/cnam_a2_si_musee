@@ -1,0 +1,73 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light shadow-sm px-3">
+    <a class="navbar-brand" href="{{ path('accueil_index') }}">{% block nav_brand %}<img
+            src="{{ asset("images/musee.svg") }}" width="40" height="40" alt="musee"> Musée Lookout{% endblock %}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav">
+            {% block nav_items %}
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMusee" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        🏛️ Musées
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuMusee">
+                        <a class="dropdown-item wide-dropdown" href="{{ path("musee_root") }}">🗂️ Index des musées</a>
+                        <div class="dropdown-divider"></div>
+                        <form class="px-4 py-3" action="{{ path("musee_search") }}" method="get">
+                            <div class="mb-3">
+                                <label class="form-label" for="paysSearch">Rechercher un musee</label>
+                                <input type="search" name="query" class="form-control" id="paysSearch">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMusee" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        🏙️ Ville
+                    </a>
+                    <div class="dropdown-menu wide-dropdown" aria-labelledby="navbarDropdownMenuVille">
+
+                        <a class="dropdown-item" href="{{ path("ville_root") }}">🗂️ Index des villes</a>
+                        <div class="dropdown-divider"></div>
+                        <form class="px-4 py-3" action="{{ path("ville_search") }}" method="get">
+                            <div class="mb-3">
+                                <label class="form-label" for="paysSearch">Rechercher une ville</label>
+                                <input type="search" name="query" class="form-control" id="paysSearch">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
+                        </form>
+
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMusee" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        🇫🇷 Pays
+                    </a>
+                    <div class="dropdown-menu wide-dropdown" aria-labelledby="navbarDropdownMenuPays">
+
+                        <a class="dropdown-item" href="{{ path("pays_index") }}">🗂️ Index des pays</a>
+                        <div class="dropdown-divider"></div>
+                        <form class="px-4 py-3" action="{{ path("pays_search") }}" method="get">
+                            <div class="mb-3">
+                                <label class="form-label" for="paysSearch">Rechercher un pays</label>
+                                <input type="search" name="query" class="form-control" id="paysSearch">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
+                        </form>
+
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+</nav>
