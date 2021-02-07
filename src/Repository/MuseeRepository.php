@@ -34,7 +34,7 @@ class MuseeRepository extends SparQL
                 ?link rdf:type dbo:Museum.
                 ?link rdfs:label ?label
                 FILTER (lang(?label) = 'fr')
-                FILTER contains(lcase(str(?label)),\"${word_lower}\")
+                FILTER contains(lcase(str(?label)),lcase(\"${word_lower}\"))
             } ORDER BY ?label
             ");
     }
