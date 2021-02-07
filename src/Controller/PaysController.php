@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\PaysRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,10 +20,19 @@ class PaysController extends AbstractController
         ]);
     }
 
-    #[Route('/search', name: '_search')]
-    public function search(): Response
+    #[Route('/search/', name: '_search')]
+    public function search(Request $request, PaysRepository $paysRepository): Response
     {
-        return $this->render('pays/index.html.twig',);
+        $query = $request->get("query", "none");
+        $result = [];
+        if ($query != "none") {
+            $result = $paysRepository->findContaining($query);
+        }
+        return $this->render('pays/result.html.twig', [
+            "query" => $query,
+            "result" => $result,
+            "title" => "Recherche par pays"
+        ]);
     }
 
     #[Route('/show/{id}', name: '_show')]

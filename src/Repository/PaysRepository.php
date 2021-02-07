@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Pays;
 use Doctrine\Persistence\ManagerRegistry;
+use EasyRdf\Sparql\Result;
 
 /**
  * @method Pays|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,32 +19,16 @@ class PaysRepository extends SparQL
         parent::__construct($registry, Pays::class);
     }
 
-    // /**
-    //  * @return Pays[] Returns an array of Pays objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findContaining(string $word): Result
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $word_lower = strtolower($word);
+        return $this->sparql_client->query("
+            SELECT * WHERE {
+                ?link rdf:type dbo:Museum.
+                ?link rdfs:label ?label
+                FILTER (lang(?label) = 'fr')
+                FILTER contains(lcase(str(?label)),\"${word_lower}\")
+            } ORDER BY ?label
+            ");
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Pays
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

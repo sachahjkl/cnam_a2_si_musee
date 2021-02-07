@@ -20,6 +20,6 @@ class DirecteurController extends AbstractController
     #[Route('/show/{id}', name: '_show')]
     public function show(): Response
     {
-        return $this->render('ville/index.html.twig',);
+        return $this->render('ville/index.html.twig');
     }
 }

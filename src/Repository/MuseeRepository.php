@@ -26,6 +26,19 @@ class MuseeRepository extends SparQL
 
     }
 
+    public function findContaining(string $word): Result
+    {
+        $word_lower = strtolower($word);
+        return $this->sparql_client->query("
+            SELECT * WHERE {
+                ?link rdf:type dbo:Museum.
+                ?link rdfs:label ?label
+                FILTER (lang(?label) = 'fr')
+                FILTER contains(lcase(str(?label)),\"${word_lower}\")
+            } ORDER BY ?label
+            ");
+    }
+
     // /**
     //  * @return Musee[] Returns an array of Musee objects
     //  */

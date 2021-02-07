@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title|default("Dashboard") }}{% endblock %}
+{% block body %}
+    {% embed "partials/_navbar.html.twig" %}
+    {% endembed %}
+    {% embed "partials/_container.html.twig" %}
+        {% block container %}
+            {% embed "partials/_card.html.twig" with {card_header:1} %}
+                {% block header %}
+                    <b>Résultat de votre recherche :</b> "{{ query }}"
+                {% endblock %}
+                {% block text %}
+                    <div class="list-group shadow-sm">
+                        {% for entry in result %}
+                            <a href="{{ entry.link }}" class="list-group-item list-group-item-action link-primary">
+                                🔗 {{ entry.label }}
+                            </a>
+                        {% else %}
+                            <div class="alert alert-danger">Pas de résultat.</div>
+                        {% endfor %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

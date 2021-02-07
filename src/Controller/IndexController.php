@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\MuseeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,11 +11,10 @@ class IndexController extends AbstractController
 {
     #[Route('/accueil', name: '_index')]
     #[Route('/', name: '_root')]
-    public function index(MuseeRepository $museeRepository): Response
+    public function index( ): Response
     {
-        $result = $museeRepository->findAll();
         return $this->render('accueil/index.html.twig', [
-            "entries" => $result
+            "title" => "Accueil"
         ]);
     }
 }

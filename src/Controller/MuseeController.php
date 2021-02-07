@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\MuseeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,10 +21,20 @@ class MuseeController extends AbstractController
     }
 
     #[Route('/search/', name: '_search')]
-    public function search(): Response
+    public function search(Request $request, MuseeRepository $museeRepository): Response
     {
-        return $this->render('musee/index.html.twig',);
+        $query = $request->get("query","none");
+        $result = [];
+        if ($query != "none") {
+            $result = $museeRepository->findContaining($query);
+        }
+        return $this->render('musee/result.html.twig', [
+            "query" => $query,
+            "result" => $result,
+            "title" => "Recherche par musées"
+        ]);
     }
+
 
     #[Route('/show/{id}', name: '_show')]
     public function show(): Response
