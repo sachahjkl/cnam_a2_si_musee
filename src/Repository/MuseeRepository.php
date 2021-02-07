@@ -3,20 +3,27 @@
 namespace App\Repository;
 
 use App\Entity\Musee;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use EasyRdf\Sparql\Result;
 
-/**
- * @method Musee|null find($id, $lockMode = null, $lockVersion = null)
- * @method Musee|null findOneBy(array $criteria, array $orderBy = null)
- * @method Musee[]    findAll()
- * @method Musee[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class MuseeRepository extends ServiceEntityRepository
+class MuseeRepository extends SparQL
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Musee::class);
+    }
+
+    public function findAll(): ?Result
+    {
+        return $this->sparql_client->query("
+            SELECT * WHERE {
+                ?link rdf:type dbo:Museum.
+                ?link rdfs:label ?label
+                FILTER (lang(?label) = 'fr')
+            } ORDER BY ?label
+            ");
+
     }
 
     // /**

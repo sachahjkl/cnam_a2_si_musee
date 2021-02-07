@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Pays;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Pays[]    findAll()
  * @method Pays[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PaysRepository extends ServiceEntityRepository
+class PaysRepository extends SparQL
 {
     public function __construct(ManagerRegistry $registry)
     {

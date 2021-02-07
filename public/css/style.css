@@ -10,3 +10,16 @@ html {
 .wide-dropdown {
     min-width: 400px;
 }
+
+
+.border-triple{
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+@media (min-width: 992px) {
+
+    .border-triple{
+        border-right: 1px solid #dee2e6 !important;
+        border-bottom: none !important;
+    }
+}

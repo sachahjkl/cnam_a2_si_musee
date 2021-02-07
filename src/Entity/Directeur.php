@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Directeur
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,6 +38,7 @@ class Directeur
      * @ORM\JoinColumn(nullable=false)
      */
     private ?Musee $musee;
+
 
     public function getId(): ?int
     {

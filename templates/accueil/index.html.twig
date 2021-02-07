@@ -4,19 +4,81 @@
 {% block body %}
     {% embed "partials/_navbar.html.twig" %}
     {% endembed %}
-    {% embed "partials/_container_fluid.html.twig" %}
-        {% block container_fluid %}
-            <div class="row mx-0">
-                <div class=" col-12 px-0 p-md-2">
-                    {% embed "partials/_card.html.twig" with {card_header:1} %}
-                        {% block header %}
-                            <b>Musée Lookout</b> : Découvrez les musées du monde
-                        {% endblock %}
-                        {% block text %}
-                        {% endblock %}
-                    {% endembed %}
-                </div>
-            </div>
+    {% embed "partials/_container.html.twig" %}
+        {% block container %}
+            {% embed "partials/_card.html.twig" with {card_header:1} %}
+                {% block header %}
+                    <b>Musée Lookout</b> : Découvrez les musées du monde
+                {% endblock %}
+                {% block text %}
+                    <div class="alert alert-info my-4">
+                        <p>
+                            <b>Sur ce site 🌐</b>, vous pourrez découvrir grâce à des index et à des formulaires de recherche
+                            les différents
+                            <b>muséés du monde</b> ainsi que naviguer entre les différents <b>pays et ville</b> dans lesquels se
+                            situent ces musées.
+                        </p>
+                        <p>
+                            Vous aurez aussi l'opportunité d'en apprendre plus sur les <b>directeurs de ces musées</b>
+                            lorsque des infos sur ceux ci sont disponibles
+                        </p>
+                    </div>
+                    <hr>
+                    <section class="searches row my-4">
+                        <div class="col-lg my-2 border-triple">
+                            <form class="px-4 py-3" action="{{ path("musee_search") }}" method="get">
+                                <div class="mb-3">
+                                    <label class="form-label" for="paysSearch">🏛️ Rechercher un musée</label>
+                                    <input type="search" name="query" class="form-control" id="paysSearch">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
+                            </form>
+                        </div>
+                        <div class="col-lg my-2 border-triple">
+                            <form class="px-4 py-3" action="{{ path("ville_search") }}" method="get">
+                                <div class="mb-3">
+                                    <label class="form-label" for="paysSearch">🏙️ Rechercher une ville</label>
+                                    <input type="search" name="query" class="form-control" id="paysSearch">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
+                            </form>
+                        </div>
+                        <div class="col-lg my-2">
+                            <form class="px-4 py-3" action="{{ path("pays_search") }}" method="get">
+                                <div class="mb-3">
+                                    <label class="form-label" for="paysSearch">🇫🇷 Rechercher un pays</label>
+                                    <input type="search" name="query" class="form-control" id="paysSearch">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
+                            </form>
+                        </div>
+
+                    </section>
+                    <hr>
+                    <section class="my-4">
+                        <h3>Indexs des différentes pages</h3>
+                        <div class="list-group">
+                            <a href="{{ path('pays_index') }}" class="list-group-item list-group-item-action">
+                                Index des Pays
+                            </a>
+                            <a href="{{ path('ville_index') }}" class="list-group-item list-group-item-action">Index des Villes</a>
+                            <a href="{{ path('musee_index') }}" class="list-group-item list-group-item-action">Index des Musées</a>
+
+                        </div>
+                    </section>
+
+                    {# <ul> #}
+                    {# {% for entry in entries %} #}
+
+                    {# <li>{{ entry.label }}</li> #}
+
+                    {# {% endfor %} #}
+                    {# </ul> #}
+                {% endblock %}
+            {% endembed %}
         {% endblock %}
     {% endembed %}
 {% endblock %}

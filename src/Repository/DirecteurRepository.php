@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Directeur;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Directeur[]    findAll()
  * @method Directeur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DirecteurRepository extends ServiceEntityRepository
+class DirecteurRepository extends SparQL
 {
     public function __construct(ManagerRegistry $registry)
     {
