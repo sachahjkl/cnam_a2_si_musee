@@ -4,37 +4,24 @@
 {% block body %}
     {% embed "partials/_navbar.html.twig" %}
     {% endembed %}
-{#    {% embed "partials/_container_fluid.html.twig" %}#}
-{#        {% block container_fluid %}#}
-{#            <div class="row mx-0">#}
-{#                <div class="col-lg-8 col-12 px-0 p-md-2">#}
-{#                    {% embed "partials/_card.html.twig" with {card_header:1} %}#}
-{#                        {% block header %}<b>#}
-{#                            Bienvenu(e) {{ app.user.prenom|capitalize }} {{ app.user.nom|upper }}</b> - Emploi du temps {{ app.user.groupe is defined ? app.user.groupe|upper : "" }}#}
-{#                        {% endblock %}#}
-{#                        {% block text %}#}
-{#                            {% embed "calendar/fetch_calendar.html.twig" with {calendar_id: "cal_1"} %}#}
-{#                            {% endembed %}#}
-{#                        {% endblock %}#}
-{#                    {% endembed %}#}
-{#                </div>#}
-{#                <div class="col-lg-4 col-12 px-0 p-md-2">#}
-{#                    {% embed "partials/_card.html.twig" with {card_header:1} %}#}
-{#                        {% block header %}#}
-{#                            Actualités#}
-{#                        {% endblock %}#}
-{#                        {% block text %}#}
-{#                            <ul>#}
-{#                                {% for actu in actualites %}#}
-{#                                    <li><a href="{{ path('actualite_show',{id: actu.id}) }}">"{{ actu.titre }}"</a> -#}
-{#                                        créée#}
-{#                                        le {{ actu.dateCreation ? actu.dateCreation|date('d-m-Y') : '' }}#}
-{#                                        par <i>{{ actu.auteur.username }}</i></li>#}
-{#                                {% endfor %}#}
-{#                            </ul>#}
-{#                        {% endblock %}#}
-{#                    {% endembed %}#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endblock %}#}
+    {% embed "partials/_container.html.twig" %}
+        {% block container %}
+            {% embed "partials/_card.html.twig" with {card_header:1} %}
+                {% block header %}
+                    <b>Index des musées</b>
+                {% endblock %}
+                {% block text %}
+                    <div class="list-group shadow-sm">
+                        {% for musee in musees %}
+                            <a href="{{ path("musee_show", {id: musee.id})  }}" class="list-group-item list-group-item-action link-primary">
+                                🔗 {{ musee.name }}
+                            </a>
+                        {% else %}
+                            <div class="alert alert-danger">Pas de résultat.</div>
+                        {% endfor %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title|default("Dashboard") }}{% endblock %}
+{% block body %}
+    {% embed "partials/_navbar.html.twig" %}
+    {% endembed %}
+    {% embed "partials/_container.html.twig" %}
+        {% block container %}
+            {% embed "partials/_card.html.twig" with {card_header:1} %}
+                {% block header %}
+                    Fiche du musée : <b></b>
+                {% endblock %}
+                {% block text %}
+                    {{ dump(musee) }}
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

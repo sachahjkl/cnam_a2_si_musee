@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\MuseeRepository;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,15 +12,14 @@ class Musee
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
-    private ?int $id;
+    private ?string $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $nom;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -34,14 +32,9 @@ class Musee
     private ?float $latitude;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private ?DateTimeInterface $date_construction;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $description;
+    private ?string $abstract;
 
     /**
      * @ORM\OneToOne(targetEntity=Directeur::class, mappedBy="musee")
@@ -54,19 +47,26 @@ class Musee
     private ?Ville $ville;
 
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function setId(string $id): ?self
     {
-        return $this->nom;
+        $this->id = $id;
+
+        return $this;
     }
 
-    public function setNom(string $nom): self
+    public function getName(): ?string
     {
-        $this->nom = $nom;
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
@@ -95,26 +95,14 @@ class Musee
         return $this;
     }
 
-    public function getDateConstruction(): ?DateTimeInterface
+    public function getAbstract(): ?string
     {
-        return $this->date_construction;
+        return $this->abstract;
     }
 
-    public function setDateConstruction(?DateTimeInterface $date_construction): self
+    public function setAbstract(?string $abstract): self
     {
-        $this->date_construction = $date_construction;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
+        $this->abstract = $abstract;
 
         return $this;
     }

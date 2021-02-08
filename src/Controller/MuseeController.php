@@ -13,10 +13,13 @@ class MuseeController extends AbstractController
 {
     #[Route('/', name: '_root')]
     #[Route('/index', name: '_index')]
-    public function index(): Response
+    public function index(MuseeRepository $museeRepository): Response
     {
+        $musees = $museeRepository->findAllFast();
+
         return $this->render('musee/index.html.twig', [
-            'controller_name' => 'MuseeController',
+            'musees' => $musees,
+            'title' => "Index des musées"
         ]);
     }
 
@@ -24,21 +27,24 @@ class MuseeController extends AbstractController
     public function search(Request $request, MuseeRepository $museeRepository): Response
     {
         $query = $request->get("query","none");
-        $result = [];
-        if ($query != "none") {
-            $result = $museeRepository->findContaining($query);
-        }
+        $musees = $museeRepository->findContainingWordInNameFast($query);
         return $this->render('musee/result.html.twig', [
             "query" => $query,
-            "result" => $result,
+            "musees" => $musees,
             "title" => "Recherche par musées"
         ]);
     }
 
 
     #[Route('/show/{id}', name: '_show')]
-    public function show(): Response
+    public function show(string $id, MuseeRepository $museeRepository): Response
     {
-        return $this->render('musee/index.html.twig',);
+
+        $musee = $museeRepository->findById($id);
+        return $this->render('musee/show.html.twig',
+        [
+            "title" => "Résumé du musée",
+            "musee" => $musee
+        ]);
     }
 }

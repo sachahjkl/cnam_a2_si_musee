@@ -13,10 +13,9 @@ class Directeur
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
-    private ?int $id;
+    private ?string $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -40,9 +39,16 @@ class Directeur
     private ?Musee $musee;
 
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): ?string
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getNom(): ?string
