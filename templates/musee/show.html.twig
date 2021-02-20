@@ -6,14 +6,114 @@
     {% endembed %}
     {% embed "partials/_container.html.twig" %}
         {% block container %}
-            {% embed "partials/_card.html.twig" with {card_header:1} %}
-                {% block header %}
-                    Fiche du musée : <b></b>
-                {% endblock %}
-                {% block text %}
-                    {{ dump(musee) }}
-                {% endblock %}
-            {% endembed %}
+            {% if musee %}
+                {% embed "partials/_card.html.twig" with {card_header:1} %}
+                    {% block header %}
+                        Fiche du musée : <b>{{ musee.name }}</b>
+                        {% if query %}
+                            <a class="btn btn-sm btn-primary float-end" role="button"
+                               href="{{ path('musee_search', {query : query}) }}">↩ Retour
+                                aux résultats </a>
+                        {% endif %}
+                    {% endblock %}
+                    {% block content %}
+                        {# {{ dump(musee) }} #}
+
+                        {% if musee.latitude and musee.longitude %}
+                            <h5><b>Carte : </b></h5>
+                            <div id="mapid" class="rounded mb-2 shadow-sm"></div>
+
+                            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+                                  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+                                  crossorigin=""/>
+                            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+                                    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+                                    crossorigin=""></script>
+
+                            <script>
+                                const coords = [];
+                                coords.push({{ musee.latitude }}, {{ musee.longitude }})
+                                const mymap = L.map('mapid').setView(coords, 13);
+                                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                                    maxZoom: 18,
+                                    id: 'mapbox/streets-v11',
+                                    tileSize: 512,
+                                    zoomOffset: -1,
+                                    accessToken: 'pk.eyJ1Ijoic2FjaGFoamtsIiwiYSI6ImNrbGUzcGduODBvdjQyd3A3dDhjYjU0eTEifQ.OZjIvHQvGmBYOMzn1E1knw'
+                                }).addTo(mymap);
+
+                                const marker = L.marker(coords).addTo(mymap);
+                                marker.bindPopup("<b>{{ musee.name }}</b> <br> <b>Latitude : </b>{{ musee.latitude }} <br> <b>Longitude : </b>{{ musee.longitude }}").openPopup()
+                            </script>
+                            <hr>
+                        {% endif %}
+                        <h5><b> Infos utiles</b></h5>
+                        <div class="row justify-items-center align-items-center">
+                            {% if musee.thumbnailUri %}
+                                <div class="col-lg-auto ">
+                                    <img class="rounded mx-auto d-block mb-2"
+                                         src="{{ musee.thumbnailUri }}" alt="image musée"
+                                         height="200px"
+                                    >
+                                </div>
+                            {% endif %}
+                            <section class="col-lg">
+                                <div class="list-group">
+                                    {% if musee.directeur %}
+                                        <div class="list-group-item list-group-item-action">
+                                            <p>
+                                                <b>Directeur du musée : </b>
+                                                <a href="{{ path('directeur_show', {id: musee.directeur.id}) }}">{{ musee.directeur.name }}</a>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    {% if musee.location %}
+                                        <div class="list-group-item list-group-item-action">
+                                            <p>
+                                                <b>Emplacement du musée : </b>
+                                                <a href="{{ path('emplacement_show', {id: musee.location.id}) }}">{{ musee.location.name }}</a>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    {% if musee.website %}
+                                        <div class="list-group-item list-group-item-action">
+                                            <p>
+                                                <b>Site web du musée :</b>
+                                                <a href="{{ musee.website }}">{{ musee.website }}</a>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    {% if musee.wikilink %}
+                                        <div class="list-group-item list-group-item-action">
+                                            <p>
+                                                <b>Wiki du musée :</b>
+                                                <a href="{{ musee.wikilink }}">{{ musee.wikilink }}</a>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </section>
+                        </div>
+
+                        {% if musee.abstract %}
+                            <hr>
+                            <div class="my-3">
+                                {% embed "partials/_collapse.html.twig" with { id:"description", color: "bg-light", color_btn: "btn-info"} %}
+                                    {% block button %}📝 <b>Description</b> {% endblock %}
+                                    {% block text %}
+                                        {{ musee.abstract }}
+                                    {% endblock %}
+                                {% endembed %}
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                {% endembed %}
+            {% else %}
+                <div class="alert alert-danger">Pas de résultat pour le musée : <b>{{ id }}</b></div>
+            {% endif %}
+
         {% endblock %}
     {% endembed %}
+
 {% endblock %}

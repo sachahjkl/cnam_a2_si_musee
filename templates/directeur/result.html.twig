@@ -6,18 +6,18 @@
     {% endembed %}
     {% embed "partials/_container.html.twig" %}
         {% block container %}
-            {% if musees %}
+            {% if directeurs %}
                 {% embed "partials/_card.html.twig" with {card_header:1} %}
                     {% block header %}
                         <b>Résultat de votre recherche :</b> "{{ query }}"
                     {% endblock %}
                     {% block content %}
-                        <p>nombre de résultats: <b>{{ musees|length }}</b></p>
+                        <p>nombre de résultats: <b>{{ directeurs|length }}</b></p>
                         <div class="list-group shadow-sm">
-                            {% for musee in musees %}
-                                <a href="{{ path("musee_show", {id: musee.id, query: query}) }}"
+                            {% for directeur in directeurs %}
+                                <a href="{{ path("directeur_show", {id: directeur.id, query: query}) }}"
                                    class="list-group-item list-group-item-action link-primary">
-                                    🔗 {{ musee.name }}
+                                    🔗 {{ directeur.name }}
                                 </a>
                             {% endfor %}
                         </div>

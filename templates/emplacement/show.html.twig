@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title|default("Dashboard") }}{% endblock %}
+{% block body %}
+    {% embed "partials/_navbar.html.twig" %}
+    {% endembed %}
+    {% embed "partials/_container.html.twig" %}
+        {% block container %}
+            {% if emplacement %}
+                {% embed "partials/_card.html.twig" with {card_header:1} %}
+                    {% block header %}
+                        Fiche de l'emplacement : <b>{{ emplacement.name }}</b>
+                        {% if query %}
+                            <a class="btn btn-sm btn-primary float-end" role="button"
+                               href="{{ path('emplacement_search', {query : query}) }}">↩ Retour
+                                aux résultats </a>
+                        {% endif %}
+                    {% endblock %}
+                    {% block content %}
+                        {{ dump(emplacement) }}
+                        {% if emplacement.abstract %}
+                            <div class="my-3">
+                                {% embed "partials/_collapse.html.twig" with { id:"description", color: "bg-light", color_btn: "btn-info"} %}
+                                    {% block button %}📝 <b>Description</b> {% endblock %}
+                                    {% block text %}
+                                        {{ emplacement.abstract }}
+                                    {% endblock %}
+                                {% endembed %}
+                            </div>
+                        {% endif %}
+
+                        {% if emplacement.musees %}
+                            <hr>
+                            <h5><b>Musées de {{ emplacement.name }} : </b></h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped border shadow-sm">
+                                    <thead>
+                                    <tr>
+                                        <th>Musée</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for musee in emplacement.musees %}
+                                        <tr>
+                                            <th>
+                                                <a href="{{ path('musee_show', {id: musee.id}) }}">{{ musee.name }}</a>
+                                            </th>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+
+                    {% endblock %}
+                {% endembed %}
+            {% else %}
+                <div class="alert alert-danger">Pas de résultat pour l'emplacement : <b>{{ id }}</b></div>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\DirecteurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,16 +12,40 @@ use Symfony\Component\Routing\Annotation\Route;
 class DirecteurController extends AbstractController
 {
     #[Route('/', name: '_root')]
-    public function index(): Response
+    #[Route('/index', name: '_index')]
+    public function index(DirecteurRepository $directeurRepository): Response
     {
+        $directeurs = $directeurRepository->findAllFast();
+
         return $this->render('directeur/index.html.twig', [
-            'controller_name' => 'DirecteurController',
+            'directeurs' => $directeurs,
+            'title' => "Index des directeurs de musées"
         ]);
     }
 
-    #[Route('/show/{id}', name: '_show')]
-    public function show(): Response
+    #[Route('/search', name: '_search')]
+    public function search(Request $request, DirecteurRepository $directeurRepository): Response
     {
-        return $this->render('ville/index.html.twig');
+        $query = $request->get("query","");
+        $directeurs = $directeurRepository->findContainingWordInNameFast($query);
+        return $this->render('directeur/result.html.twig', [
+            "query" => $query,
+            "directeurs" => $directeurs,
+            "title" => "Recherche des directeurs : " . $query
+        ]);
+    }
+
+
+    #[Route('/show/{id}', name: '_show')]
+    public function show(string $id, DirecteurRepository $directeurRepository, Request $request): Response
+    {
+        $directeur = $directeurRepository->findById($id);
+        return $this->render('directeur/show.html.twig',
+            [
+                "title" => "Résumé du directeur : " . $directeur->getName(),
+                "directeur" => $directeur,
+                "id" => $id,
+                "query" => $request->get("query")
+            ]);
     }
 }

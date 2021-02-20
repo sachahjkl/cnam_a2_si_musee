@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title|default("Dashboard") }}{% endblock %}
+{% block body %}
+    {% embed "partials/_navbar.html.twig" %}
+    {% endembed %}
+    {% embed "partials/_container.html.twig" %}
+        {% block container %}
+            {% if directeur %}
+                {% embed "partials/_card.html.twig" with {card_header:1} %}
+                    {% block header %}
+                        Fiche du directeur : <b>{{ directeur.name }}</b>
+                        {% if query %}
+                            <a class="btn btn-sm btn-primary float-end" role="button"
+                               href="{{ path('directeur_search', {query : query}) }}">↩ Retour
+                                aux résultats </a>
+                        {% endif %}
+                    {% endblock %}
+                    {% block content %}
+
+                        <h5><b>Nom du directeur</b></h5>
+                        <p>
+                        <b>{{ directeur.name }}</b>
+                        {% if directeur.musee %}
+                            dirige le musée
+                            <a class="btn btn-sm btn-success" class="text-decoration-none text-light"
+                               href="{{ path('musee_show', {id: directeur.musee.id}) }}">🏛️ {{ directeur.musee.name }}</a>
+                            </p>
+                        {% endif %}
+                        {% if directeur.abstract %}
+                            <hr>
+                            <div class="mb-3">
+                                {% embed "partials/_collapse.html.twig" with { id:"description", color: "bg-light", color_btn: "btn-info"} %}
+                                    {% block button %}📝 <b>Description</b> {% endblock %}
+                                    {% block text %}
+                                        {{ directeur.abstract }}
+                                    {% endblock %}
+                                {% endembed %}
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                {% endembed %}
+            {% else %}
+                <div class="alert alert-danger">Pas de résultat pour le directeur : <b>{{ id }}</b></div>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

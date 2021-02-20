@@ -6,25 +6,25 @@
     {% endembed %}
     {% embed "partials/_container.html.twig" %}
         {% block container %}
-            {% if musees %}
+            {% if emplacements %}
                 {% embed "partials/_card.html.twig" with {card_header:1} %}
                     {% block header %}
-                        <b>Résultat de votre recherche :</b> "{{ query }}"
+                        <b>Index des emplacements ayant des musées :</b>
                     {% endblock %}
                     {% block content %}
-                        <p>nombre de résultats: <b>{{ musees|length }}</b></p>
+                        <p>nombre de résultats: <b>{{ emplacements|length }}</b></p>
                         <div class="list-group shadow-sm">
-                            {% for musee in musees %}
-                                <a href="{{ path("musee_show", {id: musee.id, query: query}) }}"
+                            {% for emplacement in emplacements %}
+                                <a href="{{ path("emplacement_show", {id: emplacement.id}) }}"
                                    class="list-group-item list-group-item-action link-primary">
-                                    🔗 {{ musee.name }}
+                                    🔗 {{ emplacement.name }}
                                 </a>
                             {% endfor %}
                         </div>
                     {% endblock %}
                 {% endembed %}
             {% else %}
-                <div class="alert alert-danger">Pas de résultat pour la recherche : <b>{{ query }}</b></div>
+                <div class="alert alert-danger">Pas de résultat.</div>
             {% endif %}
         {% endblock %}
     {% endembed %}

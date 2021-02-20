@@ -2,16 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\VilleRepository;
+use App\Repository\EmplacementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * @ORM\Entity(repositoryClass=VilleRepository::class)
+ * @ORM\Entity(repositoryClass=EmplacementRepository::class)
  */
-class Ville
+class Emplacement
 {
     /**
      * @ORM\Id
@@ -22,30 +22,31 @@ class Ville
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $nom;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private ?float $longitude;
+    private ?float $longitude = null;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private ?float $latitude;
+    private ?float $latitude = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Pays::class, inversedBy="villes")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private ?Pays $pays;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Musee::class, mappedBy="ville")
+     * @ORM\OneToMany(targetEntity=Musee::class, mappedBy="location")
      */
     private ArrayCollection $musees;
 
-    #[Pure] public function __construct()
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $abstract = null;
+
+
+    #[Pure]
+    public function __construct()
     {
         $this->musees = new ArrayCollection();
     }
@@ -55,7 +56,7 @@ class Ville
         return $this->id;
     }
 
-    public function setId(string $id): ?string
+    public function setId(string $id): ?self
     {
         $this->id = $id;
 
@@ -63,14 +64,14 @@ class Ville
     }
 
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom(string $nom): self
+    public function setName(string $name): self
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
@@ -99,20 +100,8 @@ class Ville
         return $this;
     }
 
-    public function getPays(): ?Pays
-    {
-        return $this->pays;
-    }
-
-    public function setPays(?Pays $pays): self
-    {
-        $this->pays = $pays;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Musee[]
+     * @return Collection
      */
     public function getMusees(): Collection
     {
@@ -123,7 +112,7 @@ class Ville
     {
         if (!$this->musees->contains($musee)) {
             $this->musees[] = $musee;
-            $musee->setVille($this);
+            $musee->setLocation($this);
         }
 
         return $this;
@@ -133,11 +122,24 @@ class Ville
     {
         if ($this->musees->removeElement($musee)) {
             // set the owning side to null (unless already changed)
-            if ($musee->getVille() === $this) {
-                $musee->setVille(null);
+            if ($musee->getLocation() === $this) {
+                $musee->setLocation(null);
             }
         }
 
         return $this;
     }
+
+    public function getAbstract(): ?string
+    {
+        return $this->abstract;
+    }
+
+    public function setAbstract(?string $abstract): self
+    {
+        $this->abstract = $abstract;
+
+        return $this;
+    }
+
 }

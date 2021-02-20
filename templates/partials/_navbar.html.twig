@@ -28,18 +28,18 @@
                     </div>
                 </div>
                 <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMusee" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuDirecteur" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        🏙️ Ville
+                        👨‍🏫 Directeur
                     </a>
-                    <div class="dropdown-menu wide-dropdown" aria-labelledby="navbarDropdownMenuVille">
+                    <div class="dropdown-menu wide-dropdown" aria-labelledby="navbarDropdownMenuDirecteur">
 
-                        <a class="dropdown-item" href="{{ path("ville_root") }}">🗂️ Index des villes</a>
+                        <a class="dropdown-item" href="{{ path("directeur_root") }}">🗂️ Index des directeurs</a>
                         <div class="dropdown-divider"></div>
-                        <form class="px-4 py-3" action="{{ path("ville_search") }}" method="get">
+                        <form class="px-4 py-3" action="{{ path("directeur_search") }}" method="get">
                             <div class="mb-3">
-                                <label class="form-label" for="paysSearch">Rechercher une ville</label>
-                                <input type="search" name="query" class="form-control" id="paysSearch">
+                                <label class="form-label" for="directeurSearch">Rechercher un directeur</label>
+                                <input type="search" name="query" class="form-control" id="directeurSearch">
                             </div>
 
                             <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
@@ -48,17 +48,17 @@
                     </div>
                 </div>
                 <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMusee" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuEmplacement" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        🇫🇷 Pays
+                        🏙️ Emplacements
                     </a>
-                    <div class="dropdown-menu wide-dropdown" aria-labelledby="navbarDropdownMenuPays">
+                    <div class="dropdown-menu wide-dropdown" aria-labelledby="navbarDropdownMenuEmplacement">
 
-                        <a class="dropdown-item" href="{{ path("pays_index") }}">🗂️ Index des pays</a>
+                        <a class="dropdown-item" href="{{ path("emplacement_root") }}">🗂️ Index des emplacement</a>
                         <div class="dropdown-divider"></div>
-                        <form class="px-4 py-3" action="{{ path("pays_search") }}" method="get">
+                        <form class="px-4 py-3" action="{{ path("emplacement_search") }}" method="get">
                             <div class="mb-3">
-                                <label class="form-label" for="paysSearch">Rechercher un pays</label>
+                                <label class="form-label" for="paysSearch">Rechercher un emplacement</label>
                                 <input type="search" name="query" class="form-control" id="paysSearch">
                             </div>
 

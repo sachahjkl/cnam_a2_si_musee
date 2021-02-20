@@ -3,23 +3,15 @@
 namespace App\Repository;
 
 use App\Entity\Musee;
-use Doctrine\Persistence\ManagerRegistry;
 use EasyRdf\Sparql\Result;
 use JetBrains\PhpStorm\ArrayShape;
-use Psr\Log\LoggerInterface;
 
 class MuseeRepository extends SparQL
 {
 
-    /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $logger;
-
-    public function __construct(ManagerRegistry $registry, LoggerInterface $logger)
+    public function __construct()
     {
-        parent::__construct($registry, Musee::class);
-        $this->logger = $logger;
+        parent::__construct();
     }
 
     public function arrayFromResultFast(Result $result): array
@@ -52,10 +44,30 @@ class MuseeRepository extends SparQL
             $musee->setAbstract($entry->abstract ?? null);
             if (isset($entry->latitude)) {
                 $musee->setLatitude($entry->latitude->getValue());
-
             }
             if (isset($entry->longitude)) {
                 $musee->setLongitude($entry->longitude->getValue());
+            }
+            if (isset($entry->director)) {
+                $directeurRepository = new DirecteurRepository();
+                $id = self::getIdFromResourceURI($entry->director);
+                $directeur = $directeurRepository->findByIdFast($id);
+                $musee->setDirecteur($directeur);
+            }
+            if (isset($entry->thumbnail)) {
+                $musee->setThumbnailUri($entry->thumbnail);
+            }
+            if (isset($entry->website)) {
+                $musee->setWebsite($entry->website);
+            }
+            if (isset($entry->wikilink)) {
+                $musee->setWikilink($entry->wikilink);
+            }
+            if (isset($entry->location)) {
+                $emplacementRepository = new EmplacementRepository();
+                $id = self::getIdFromResourceURI($entry->location);
+                $emplacement = $emplacementRepository->findByIdFast($id);
+                $musee->setLocation($emplacement);
             }
             $musees[] = $musee;
         }
@@ -73,23 +85,37 @@ class MuseeRepository extends SparQL
               (MAX(?latitude) as ?latitude)
               (MAX(?longitude) as ?longitude)
               (SAMPLE(?website) as ?website)
-              (SAMPLE(?homepage) as ?homepage)
               (SAMPLE(?wikilink) as ?wikilink)
               (SAMPLE(?director) as ?director)
+              (SAMPLE(?location) as ?location)
             WHERE { 
-              ?museum a dbo:Museum ; 
-                      dbp:name ?name ; 
-                      dbo:abstract ?abstract ; 
-                      dbo:thumbnail ?thumbnail ; 
-                      geo:lat ?latitude ;  
-                      geo:long ?longitude ; 
-                      dbp:website ?website ; 
-                      foaf:homepage ?homepage ; 
-                      foaf:isPrimaryTopicOf ?wikilink.
+               ?museum rdf:type dbo:Museum.
+               ?museum dbp:name ?name.
             OPTIONAL {
-                     ?museum dbp:director | dbr:director ?director .
-            }   
-              FILTER(langMatches(lang(?abstract),'en')) 
+               ?museum dbo:abstract ?abstract .
+               FILTER(langMatches(lang(?abstract),'en'))
+            }
+            OPTIONAL { 
+               ?museum dbo:thumbnail ?thumbnail
+            }
+            OPTIONAL { 
+                ?museum geo:lat ?latitude
+            }
+            OPTIONAL {  
+                ?museum geo:long ?longitude
+              }
+            OPTIONAL { 
+                ?museum dbp:website ?website
+            }
+            OPTIONAL { 
+                ?museum foaf:isPrimaryTopicOf ?wikilink
+            }
+            OPTIONAL {
+               ?museum dbp:director | dbr:director ?director .
+            }
+            OPTIONAL {
+               ?museum dbo:location ?location .
+            } 
               FILTER (langMatches(lang(?name),'en'))
             }
             GROUP BY ?museum
@@ -117,7 +143,6 @@ class MuseeRepository extends SparQL
     #[ArrayShape([Musee::class])]
     public function findContainingWordInNameFast(string $word): array
     {
-        $word_lower = strtolower($word);
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?museum
               (MAX(?name) as ?name)
@@ -125,14 +150,13 @@ class MuseeRepository extends SparQL
               ?museum a dbo:Museum ; 
                       dbp:name ?name.
               FILTER (langMatches(lang(?name),'en'))
-              FILTER contains(lcase(str(?name)),lcase('${word_lower}'))
+              FILTER contains(lcase(str(?name)),lcase(\"${word}\"))
             }
             GROUP BY ?museum
             ");
         return $this->arrayFromResultFast($result);
     }
 
-    #[ArrayShape([Musee::class])]
     public function findById(string $id): ?Musee
     {
         $resource = self::$prefix . $id;
@@ -144,28 +168,96 @@ class MuseeRepository extends SparQL
               (MAX(?latitude) as ?latitude)
               (MAX(?longitude) as ?longitude)
               (SAMPLE(?website) as ?website)
-              (SAMPLE(?homepage) as ?homepage)
               (SAMPLE(?wikilink) as ?wikilink)
               (SAMPLE(?director) as ?director)
+              (SAMPLE(?location) as ?location)
             WHERE { 
-            BIND( <${resource}> as ?museum)
-               ?museum dbp:name ?name. 
+            BIND(<${resource}> as ?museum)
+               ?museum dbp:name ?name.
             OPTIONAL {
-               ?museum dbo:abstract ?abstract ; 
-                      dbo:thumbnail ?thumbnail ; 
-                      geo:lat ?latitude ;  
-                      geo:long ?longitude ; 
-                      dbp:website ?website ; 
-                      foaf:homepage ?homepage ; 
-                      foaf:isPrimaryTopicOf ?wikilink.
-                      ?museum dbp:director | dbr:director ?director .
-            }   
-              FILTER(langMatches(lang(?abstract),'en')) 
+               ?museum dbo:abstract ?abstract .
+               FILTER(langMatches(lang(?abstract),'en'))
+            }
+            OPTIONAL { 
+               ?museum dbo:thumbnail ?thumbnail
+            }
+            OPTIONAL { 
+                ?museum geo:lat ?latitude
+            }
+            OPTIONAL {  
+                ?museum geo:long ?longitude
+              }
+            OPTIONAL { 
+                ?museum dbp:website ?website
+            }
+            OPTIONAL { 
+                ?museum foaf:isPrimaryTopicOf ?wikilink
+            }
+            OPTIONAL {
+               ?museum dbp:director | dbr:director ?director .
+            }
+            OPTIONAL {
+               ?museum dbo:location ?location .
+            }    
               FILTER (langMatches(lang(?name),'en'))
             }
             GROUP BY ?museum
             ");
-        return $this->arrayFromResultFull($result)[0];
+
+        return $this->arrayFromResultFull($result)[0] ?? null;
+    }
+
+    public function findByIdFast(string $id): ?Musee
+    {
+        $resource = self::$prefix . $id;
+        $result = $this->sparql_client->query("
+            SELECT DISTINCT ?museum
+              (MAX(?name) as ?name)
+            WHERE { 
+            BIND(<${resource}> as ?museum)
+               ?museum dbp:name ?name.
+              FILTER (langMatches(lang(?name),'en'))
+            }
+            GROUP BY ?museum
+            ");
+
+        return $this->arrayFromResultFast($result)[0] ?? null;
+    }
+
+    public function findByDirectorFast(string $directorId): ?Musee
+    {
+        $resource = self::$prefix . $directorId;
+        $result = $this->sparql_client->query("
+            SELECT DISTINCT ?museum
+              (MAX(?name) as ?name)
+            WHERE { 
+               ?museum rdf:type dbo:Museum.
+               ?museum dbp:name ?name.
+               ?museum dbp:director | dbr:director <${resource}> .
+              FILTER (langMatches(lang(?name),'en'))
+            }
+            GROUP BY ?museum
+            ");
+
+        return $this->arrayFromResultFast($result)[0] ?? null;
+    }
+
+    public function findByLocationFast(string $locationId): array
+    {
+        $resource = self::$prefix . $locationId;
+        $result = $this->sparql_client->query("
+            SELECT DISTINCT ?museum
+              (MAX(?name) as ?name)
+            WHERE { 
+               ?museum rdf:type dbo:Museum.
+               ?museum dbp:name ?name.
+               ?museum dbo:location <${resource}> .
+              FILTER (langMatches(lang(?name),'en'))
+            }
+            GROUP BY ?museum
+            ");
+
+        return $this->arrayFromResultFast($result);
     }
 
 }

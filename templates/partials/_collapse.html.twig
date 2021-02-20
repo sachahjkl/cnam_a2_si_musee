@@ -1,10 +1,10 @@
-<div class="card {{ color|default("bg-light") }}"
+<div class="card shadow-sm {{ color|default("bg-light") }}"
      {% if color_css is defined %}style="background-color: {{ color_css }}"{% endif %}>
     <div class="card-header" id="heading_{{ id }}">
         <h5 class="mb-0">
-            <button class="btn collapsed {{ color_btn|default }}" type="button" data-toggle="collapse" data-target="#collapse_{{ id }}"
+            <button class="btn collapsed {{ color_btn|default }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ id }}"
                     aria-expanded="true" aria-controls="collapse_{{ id }}">
-                {% block button %}Bouton{% endblock %}
+                {% block button %}Bouton{% endblock %} (cliquer pour ouvrir)
             </button>
         </h5>
     </div>

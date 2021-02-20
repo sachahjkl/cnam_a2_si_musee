@@ -3,19 +3,16 @@
 
 namespace App\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use EasyRdf\Sparql\Client;
 
-abstract class SparQL extends ServiceEntityRepository
+abstract class SparQL
 {
     protected Client $sparql_client;
     protected static string $prefix = "http://dbpedia.org/resource/";
 
-    public function __construct(ManagerRegistry $registry, string $entityClass)
+    public function __construct()
     {
         $this->sparql_client = new Client("https://dbpedia.org/sparql", "");
-        parent::__construct($registry, $entityClass);
     }
 
     public static function getIdFromResourceURI(string $URI): ?string
@@ -23,7 +20,7 @@ abstract class SparQL extends ServiceEntityRepository
         $split = preg_split("/\//", $URI);
         if (count($split) == 0)
             return null;
-        return $split[count($split) - 1];
+        return str_replace(" ", "_", $split[count($split) - 1]);
 
     }
 

@@ -12,20 +12,26 @@ html {
 }
 
 
-.border-triple{
+.border-triple {
     border-bottom: 1px solid #dee2e6 !important;
 }
 
 @media (min-width: 992px) {
 
-    .border-triple{
+    .border-triple {
         border-right: 1px solid #dee2e6 !important;
         border-bottom: none !important;
     }
 }
 
-.panel:target{
+.panel:target {
     display: block;
 }
 
-.panel{ display:none }
+.panel {
+    display: none
+}
+
+#mapid {
+    height: 350px;
+}

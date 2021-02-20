@@ -10,19 +10,18 @@
                 {% block header %}
                     <b>Musée Lookout</b> : Découvrez les musées du monde
                 {% endblock %}
-                {% block text %}
-                    <div class="alert alert-info my-4">
+                {% block content %}
+                    <div class="alert alert-info mb-4 mt-2 shadow-sm">
                         <p>
                             <b>Sur ce site 🌐</b>, vous pourrez découvrir grâce à des index et à des formulaires de
                             recherche
                             les différents
-                            <b>muséés du monde</b> ainsi que naviguer entre les différents <b>pays et ville</b> dans
-                            lesquels se
-                            situent ces musées.
+                            <b>muséés du monde</b> ainsi que naviguer entre les différents <b>emplacements</b> dans
+                            lesquels se situent ces musées.
                         </p>
                         <p>
                             Vous aurez aussi l'opportunité d'en apprendre plus sur les <b>directeurs de ces musées</b>
-                            lorsque des infos sur ceux ci sont disponibles
+                            lorsque des infos sur ceux-ci sont disponibles
                         </p>
                     </div>
                     <hr>
@@ -31,20 +30,8 @@
                             <article class="card-body card shadow-sm">
                                 <form class="px-4 py-3" action="{{ path("musee_search") }}" method="get">
                                     <div class="mb-3">
-                                        <label class="form-label" for="paysSearch">🏛️ Rechercher un musée</label>
-                                        <input type="search" name="query" class="form-control" id="paysSearch">
-                                    </div>
-
-                                    <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
-                                </form>
-                            </article>
-                        </div>
-                        <div class="col-lg my-2">
-                            <article class="card-body card shadow-sm">
-                                <form class="px-4 py-3" action="{{ path("ville_search") }}" method="get">
-                                    <div class="mb-3">
-                                        <label class="form-label" for="paysSearch">🏙️ Rechercher une ville</label>
-                                        <input type="search" name="query" class="form-control" id="paysSearch">
+                                        <label class="form-label" for="muséeSearch">🏛️ Rechercher un musée</label>
+                                        <input type="search" name="query" class="form-control" id="muséeSearch">
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
@@ -53,42 +40,47 @@
                         </div>
                         <div class="col-lg my-2 ">
                             <article class="card-body card shadow-sm">
-                                <form class="px-4 py-3" action="{{ path("pays_search") }}" method="get">
+                                <form class="px-4 py-3" action="{{ path("directeur_search") }}" method="get">
                                     <div class="mb-3">
-                                        <label class="form-label" for="paysSearch">🇫🇷 Rechercher un pays</label>
-                                        <input type="search" name="query" class="form-control" id="paysSearch">
+                                        <label class="form-label" for="directeurSearch">👨‍🏫 Rechercher un
+                                            directeur</label>
+                                        <input type="search" name="query" class="form-control" id="directeurSearch">
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
                                 </form>
                             </article>
                         </div>
+                        <div class="col-lg my-2">
+                            <article class="card-body card shadow-sm">
+                                <form class="px-4 py-3" action="{{ path("emplacement_search") }}" method="get">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="emplacementSearch">🏙️ Rechercher un
+                                            emplacement</label>
+                                        <input type="search" name="query" class="form-control" id="emplacementSearch">
+                                    </div>
 
+                                    <button type="submit" class="btn btn-primary">Rechercher 🔎</button>
+                                </form>
+                            </article>
+                        </div>
                     </section>
                     <hr>
                     <section class="my-4">
-                        <h3>Indexs des différentes pages</h3>
-                        <div class="list-group">
-                            <a href="{{ path('pays_index') }}" class="list-group-item list-group-item-action">
-                                🗂️ Index des Pays
-                            </a>
-                            <a href="{{ path('ville_index') }}" class="list-group-item list-group-item-action">
-                                🗂️ Index des Villes
-                            </a>
+                        <h5><b>Indexs des différentes pages</b></h5>
+                        <div class="list-group shadow-sm">
                             <a href="{{ path('musee_index') }}" class="list-group-item list-group-item-action">
                                 🗂️ Index des Musées
+                            </a>
+                            <a href="{{ path('directeur_index') }}" class="list-group-item list-group-item-action">
+                                🗂️ Index des Directeurs
+                            </a>
+                            <a href="{{ path('emplacement_search') }}" class="list-group-item list-group-item-action">
+                                🗂️ Index des Emplacements
                             </a>
 
                         </div>
                     </section>
-
-                    {# <ul> #}
-                    {# {% for entry in entries %} #}
-
-                    {# <li>{{ entry.label }}</li> #}
-
-                    {# {% endfor %} #}
-                    {# </ul> #}
                 {% endblock %}
             {% endembed %}
         {% endblock %}

@@ -24,17 +24,34 @@ class Musee
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private ?float $longitude;
+    private ?float $longitude = null;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private ?float $latitude;
+    private ?float $latitude = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $abstract;
+    private ?string $abstract = null;
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $thumbnailUri = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $website = null;
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $wikilink = null;
 
     /**
      * @ORM\OneToOne(targetEntity=Directeur::class, mappedBy="musee")
@@ -42,9 +59,15 @@ class Musee
     private ?Directeur $directeur;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="musees")
+     * @ORM\ManyToOne(targetEntity=Emplacement::class, inversedBy="musees")
      */
-    private ?Ville $ville;
+    private ?Emplacement $location;
+
+    public function __construct()
+    {
+        $this->directeur = null;
+        $this->location = null;
+    }
 
 
     public function getId(): ?string
@@ -107,15 +130,58 @@ class Musee
         return $this;
     }
 
+
+    public function getThumbnailUri(): ?string
+    {
+        return $this->thumbnailUri;
+    }
+
+    public function setThumbnailUri(?string $thumbnailUri): self
+    {
+        $this->thumbnailUri = $thumbnailUri;
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+
+    public function getWikilink(): ?string
+    {
+        return $this->wikilink;
+    }
+
+    public function setWikilink(?string $wikilink): self
+    {
+        $this->wikilink = $wikilink;
+
+        return $this;
+    }
+
     public function getDirecteur(): ?Directeur
     {
         return $this->directeur;
     }
 
-    public function setDirecteur(Directeur $directeur): self
+    public function setDirecteur(?Directeur $directeur): self
     {
+        // unset the owning side of the relation if necessary
+        if ($directeur === null && $this->directeur !== null) {
+            $this->directeur->setMusee(null);
+        }
+
         // set the owning side of the relation if necessary
-        if ($directeur->getMusee() !== $this) {
+        if ($directeur !== null && $directeur->getMusee() !== $this) {
             $directeur->setMusee($this);
         }
 
@@ -124,14 +190,14 @@ class Musee
         return $this;
     }
 
-    public function getVille(): ?Ville
+    public function getLocation(): ?Emplacement
     {
-        return $this->ville;
+        return $this->location;
     }
 
-    public function setVille(?Ville $ville): self
+    public function setLocation(?Emplacement $location): self
     {
-        $this->ville = $ville;
+        $this->location = $location;
 
         return $this;
     }

@@ -23,28 +23,30 @@ class MuseeController extends AbstractController
         ]);
     }
 
-    #[Route('/search/', name: '_search')]
+    #[Route('/search', name: '_search')]
     public function search(Request $request, MuseeRepository $museeRepository): Response
     {
-        $query = $request->get("query","none");
+        $query = $request->get("query", "");
         $musees = $museeRepository->findContainingWordInNameFast($query);
         return $this->render('musee/result.html.twig', [
+            "title" => "Recherche des musées : " . $query,
             "query" => $query,
-            "musees" => $musees,
-            "title" => "Recherche par musées"
+            "musees" => $musees
         ]);
     }
 
 
     #[Route('/show/{id}', name: '_show')]
-    public function show(string $id, MuseeRepository $museeRepository): Response
+    public function show(string $id, MuseeRepository $museeRepository, Request $request): Response
     {
-
         $musee = $museeRepository->findById($id);
         return $this->render('musee/show.html.twig',
-        [
-            "title" => "Résumé du musée",
-            "musee" => $musee
-        ]);
+            [
+                "title" => "Résumé du musée : " . $musee->getName(),
+                "query" => $request->get("query"),
+                "musee" => $musee,
+                "id" => $id
+            ]);
     }
+
 }
