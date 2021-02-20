@@ -17,8 +17,6 @@
                         {% endif %}
                     {% endblock %}
                     {% block content %}
-                        {# {{ dump(musee) }} #}
-
                         {% if musee.latitude and musee.longitude %}
                             <h5><b>Carte : </b></h5>
                             <div id="mapid" class="rounded mb-2 shadow-sm"></div>
@@ -48,7 +46,7 @@
                             </script>
                             <hr>
                         {% endif %}
-                        <h5><b> Infos utiles</b></h5>
+                        <h5><b> Infos utiles :</b></h5>
                         <div class="row justify-items-center align-items-center">
                             {% if musee.thumbnailUri %}
                                 <div class="col-lg-auto ">

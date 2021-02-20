@@ -17,9 +17,8 @@
                         {% endif %}
                     {% endblock %}
                     {% block content %}
-                        {{ dump(emplacement) }}
                         {% if emplacement.abstract %}
-                            <div class="my-3">
+                            <div class="mb-3">
                                 {% embed "partials/_collapse.html.twig" with { id:"description", color: "bg-light", color_btn: "btn-info"} %}
                                     {% block button %}📝 <b>Description</b> {% endblock %}
                                     {% block text %}
