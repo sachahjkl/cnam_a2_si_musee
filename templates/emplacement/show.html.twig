@@ -17,6 +17,36 @@
                         {% endif %}
                     {% endblock %}
                     {% block content %}
+                        {% if emplacement.latitude and emplacement.longitude %}
+                            <h5><b>Carte : </b></h5>
+                            <div id="mapid" class="rounded mb-2 shadow-sm"></div>
+
+                            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+                                  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+                                  crossorigin=""/>
+                            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+                                    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+                                    crossorigin=""></script>
+
+                            <script>
+                                const coords = [];
+                                coords.push({{ emplacement.latitude }}, {{ emplacement.longitude }})
+                                const mymap = L.map('mapid').setView(coords, 5);
+                                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                                    maxZoom: 18,
+                                    id: 'mapbox/streets-v11',
+                                    tileSize: 512,
+                                    zoomOffset: -1,
+                                    accessToken: 'pk.eyJ1Ijoic2FjaGFoamtsIiwiYSI6ImNrbGUzcGduODBvdjQyd3A3dDhjYjU0eTEifQ.OZjIvHQvGmBYOMzn1E1knw'
+                                }).addTo(mymap);
+
+                                const marker = L.marker(coords).addTo(mymap);
+                                marker.bindPopup("<b>{{ emplacement.name }}</b> <br> <b>Latitude : </b>{{ emplacement.latitude }} <br> <b>Longitude : </b>{{ emplacement.longitude }}").openPopup()
+                            </script>
+                            <hr>
+                        {% endif %}
+
                         {% if emplacement.abstract %}
                             <div class="mb-3">
                                 {% embed "partials/_collapse.html.twig" with { id:"description", color: "bg-light", color_btn: "btn-info"} %}
