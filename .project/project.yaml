@@ -1,0 +1,8 @@
+name: "cnam_a2_si_musee"
+description: "https://musee.sacha.house - Projet d'exploration du WebSemantic (RDF, SparQL) présentant les musées du monde. Implémenté à l'aide de Symfony et Bootstrap + client SparQL pour émettre des requêtes."
+topics: []
+homepage: ""
+source:
+  provider: gitlab
+  namespace: "sachahjkl"
+  path: "sachahjkl/cnam_a2_si_musee"
