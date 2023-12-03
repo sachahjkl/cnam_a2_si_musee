@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  musee-app:
+    build:
+      context: ./
+    image: sachahjkl/musee-app:latest
+    container_name: musee-app
+    restart: unless-stopped
+    ports:
+      - 1488:80
+    environment:
+      APP_ENV: prod # this should always be prod ?
+      APP_SECRET: 69784sd9g81f98g1sdf6g1df9dp61 # Default app secret (override please)
+      APP_NAME: Musée Lookout # can stay as is probably
