@@ -88,26 +88,26 @@ class MuseeRepository extends SparQL
               (SAMPLE(?wikilink) as ?wikilink)
               (SAMPLE(?director) as ?director)
               (SAMPLE(?location) as ?location)
-            WHERE { 
+            WHERE {
                ?museum rdf:type dbo:Museum.
                ?museum dbp:name ?name.
             OPTIONAL {
                ?museum dbo:abstract ?abstract .
                FILTER(langMatches(lang(?abstract),'en'))
             }
-            OPTIONAL { 
+            OPTIONAL {
                ?museum dbo:thumbnail ?thumbnail
             }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum geo:lat ?latitude
             }
-            OPTIONAL {  
+            OPTIONAL {
                 ?museum geo:long ?longitude
               }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum dbp:website ?website
             }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum foaf:isPrimaryTopicOf ?wikilink
             }
             OPTIONAL {
@@ -115,7 +115,7 @@ class MuseeRepository extends SparQL
             }
             OPTIONAL {
                ?museum dbo:location ?location .
-            } 
+            }
               FILTER (langMatches(lang(?name),'en'))
             }
             GROUP BY ?museum
@@ -130,8 +130,8 @@ class MuseeRepository extends SparQL
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?museum
               (MAX(?name) as ?name)
-            WHERE { 
-              ?museum a dbo:Museum ; 
+            WHERE {
+              ?museum a dbo:Museum ;
                       dbp:name ?name.
               FILTER (langMatches(lang(?name),'en'))
             }
@@ -146,8 +146,8 @@ class MuseeRepository extends SparQL
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?museum
               (MAX(?name) as ?name)
-            WHERE { 
-              ?museum a dbo:Museum ; 
+            WHERE {
+              ?museum a dbo:Museum ;
                       dbp:name ?name.
               FILTER (langMatches(lang(?name),'en'))
               FILTER contains(lcase(str(?name)),lcase(\"${word}\"))
@@ -171,26 +171,26 @@ class MuseeRepository extends SparQL
               (SAMPLE(?wikilink) as ?wikilink)
               (SAMPLE(?director) as ?director)
               (SAMPLE(?location) as ?location)
-            WHERE { 
+            WHERE {
             BIND(<${resource}> as ?museum)
                ?museum dbp:name ?name.
             OPTIONAL {
                ?museum dbo:abstract ?abstract .
                FILTER(langMatches(lang(?abstract),'en'))
             }
-            OPTIONAL { 
+            OPTIONAL {
                ?museum dbo:thumbnail ?thumbnail
             }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum geo:lat ?latitude
             }
-            OPTIONAL {  
+            OPTIONAL {
                 ?museum geo:long ?longitude
               }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum dbp:website ?website
             }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum foaf:isPrimaryTopicOf ?wikilink
             }
             OPTIONAL {
@@ -198,7 +198,7 @@ class MuseeRepository extends SparQL
             }
             OPTIONAL {
                ?museum dbo:location ?location .
-            }    
+            }
               FILTER (langMatches(lang(?name),'en'))
             }
             GROUP BY ?museum
@@ -213,7 +213,7 @@ class MuseeRepository extends SparQL
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?museum
               (MAX(?name) as ?name)
-            WHERE { 
+            WHERE {
             BIND(<${resource}> as ?museum)
                ?museum dbp:name ?name.
               FILTER (langMatches(lang(?name),'en'))
@@ -230,7 +230,7 @@ class MuseeRepository extends SparQL
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?museum
               (MAX(?name) as ?name)
-            WHERE { 
+            WHERE {
                ?museum rdf:type dbo:Museum.
                ?museum dbp:name ?name.
                ?museum dbp:director | dbr:director <${resource}> .
@@ -248,7 +248,7 @@ class MuseeRepository extends SparQL
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?museum
               (MAX(?name) as ?name)
-            WHERE { 
+            WHERE {
                ?museum rdf:type dbo:Museum.
                ?museum dbp:name ?name.
                ?museum dbo:location <${resource}> .

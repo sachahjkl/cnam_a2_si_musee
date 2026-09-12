@@ -11,6 +11,16 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
+    public function getCacheDir(): string
+    {
+        return getenv('APP_CACHE_DIR') ?: parent::getCacheDir();
+    }
+
+    public function getLogDir(): string
+    {
+        return getenv('APP_LOG_DIR') ?: parent::getLogDir();
+    }
+
     protected function configureContainer(ContainerConfigurator $container): void
     {
         $container->import('../config/{packages}/*.yaml');

@@ -62,7 +62,7 @@ class DirecteurRepository extends SparQL
             SELECT DISTINCT ?director
               (MAX(?name) as ?name)
               (SAMPLE(?abstract) as ?abstract)
-            WHERE { 
+            WHERE {
             BIND(<${resource}> as ?director)
               ?director rdfs:label ?name.
               FILTER (langMatches(lang(?name),'en'))
@@ -83,7 +83,7 @@ class DirecteurRepository extends SparQL
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?director
               (MAX(?name) as ?name)
-            WHERE { 
+            WHERE {
             BIND(<${resource}> as ?director)
                ?director rdfs:label ?name.
               FILTER (langMatches(lang(?name),'en'))

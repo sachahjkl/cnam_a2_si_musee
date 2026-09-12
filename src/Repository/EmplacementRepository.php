@@ -75,29 +75,29 @@ class EmplacementRepository extends SparQL
               (SAMPLE(?wikilink) as ?wikilink)
               (SAMPLE(?director) as ?director)
               (SAMPLE(?location) as ?location)
-            WHERE { 
+            WHERE {
                ?museum rdf:type dbo:Museum.
                ?museum dbp:name ?name.
             OPTIONAL {
                ?museum dbo:abstract ?abstract .
                FILTER(langMatches(lang(?abstract),'en'))
             }
-            OPTIONAL { 
+            OPTIONAL {
                ?museum dbo:thumbnail ?thumbnail
             }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum geo:lat ?latitude
             }
-            OPTIONAL {  
+            OPTIONAL {
                 ?museum geo:long ?longitude
               }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum dbp:website ?website
             }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum foaf:homepage ?homepage
             }
-            OPTIONAL { 
+            OPTIONAL {
                 ?museum foaf:isPrimaryTopicOf ?wikilink
             }
             OPTIONAL {
@@ -105,7 +105,7 @@ class EmplacementRepository extends SparQL
             }
             OPTIONAL {
                ?museum dbo:location ?location .
-            } 
+            }
               FILTER (langMatches(lang(?name),'en'))
             }
             GROUP BY ?location
@@ -120,7 +120,7 @@ class EmplacementRepository extends SparQL
         $result = $this->sparql_client->query("
            SELECT DISTINCT ?location
               (MAX(?name) as ?name)
-            WHERE { 
+            WHERE {
                ?museum rdf:type dbo:Museum.
                ?museum dbo:location ?location .
                ?location rdfs:label ?name.
@@ -137,7 +137,7 @@ class EmplacementRepository extends SparQL
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?location
               (MAX(?name) as ?name)
-            WHERE { 
+            WHERE {
                ?museum rdf:type dbo:Museum.
                ?museum dbo:location ?location .
                ?location rdfs:label ?name.
@@ -158,20 +158,20 @@ class EmplacementRepository extends SparQL
               (SAMPLE(?abstract) as ?abstract)
               (MAX(?latitude) as ?latitude)
               (MAX(?longitude) as ?longitude)
-            WHERE { 
+            WHERE {
                BIND(<${resource}> as ?location)
                ?location rdfs:label ?name.
                OPTIONAL {
                     ?location dbo:abstract ?abstract .
                     FILTER(langMatches(lang(?abstract),'en'))
                }
-               OPTIONAL { 
+               OPTIONAL {
                     ?location geo:lat ?latitude
                }
-               OPTIONAL {  
+               OPTIONAL {
                     ?location geo:long ?longitude
                }
-               
+
               FILTER (langMatches(lang(?name),'en'))
               }
             ");
@@ -185,7 +185,7 @@ class EmplacementRepository extends SparQL
         $result = $this->sparql_client->query("
             SELECT DISTINCT ?location
               (MAX(?name) as ?name)
-            WHERE { 
+            WHERE {
                BIND(<${resource}> as ?location)
                ?location rdfs:label ?name.
               FILTER (langMatches(lang(?name),'en'))
