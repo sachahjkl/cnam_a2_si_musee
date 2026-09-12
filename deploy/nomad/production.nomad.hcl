@@ -49,9 +49,7 @@ job "musee-lookout" {
       mode = "host"
 
       port "http" {
-        static       = 9132
-        to           = 8000
-        host_network = "loopback"
+        to = 8000
       }
     }
 
