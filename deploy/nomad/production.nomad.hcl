@@ -86,7 +86,7 @@ EOH
         port     = "http"
         tags = [
           "traefik.enable=true",
-          "traefik.http.routers.musee-lookout-production.entrypoints=nomad",
+          "traefik.http.routers.musee-lookout-production.entrypoints=websecure",
           "traefik.http.routers.musee-lookout-production.rule=Host(`musee.sacha.house`)",
         ]
 
