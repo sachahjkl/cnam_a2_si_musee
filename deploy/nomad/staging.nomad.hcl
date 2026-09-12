@@ -91,6 +91,7 @@ EOH
           "traefik.http.routers.musee-lookout-staging.entrypoints=nomad",
           "traefik.http.routers.musee-lookout-staging.middlewares=musee-lookout-staging-noindex",
           "traefik.http.routers.musee-lookout-staging.rule=Host(`staging.musee.sacha.house`)",
+          "traefik.http.routers.musee-lookout-staging.tls.domains[0].main=staging.musee.sacha.house",
           "traefik.http.middlewares.musee-lookout-staging-noindex.headers.customresponseheaders.X-Robots-Tag=noindex, nofollow",
         ]
 
