@@ -3,6 +3,17 @@ application:
   port: 8000
   healthPath: /api/health
 
-domain:
-  production: musee.sacha.house
-  staging: staging.musee.sacha.house
+modules:
+  task:
+    - deploy/task.hcl
+
+environments:
+  staging:
+    domain: staging.musee.sacha.house
+    noIndex: true
+  production:
+    domain: musee.sacha.house
+
+resources:
+  cpu: 200
+  memory: 128
