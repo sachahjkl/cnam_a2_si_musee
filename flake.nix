@@ -74,6 +74,10 @@
           pm.max_spare_servers = 3
           catch_workers_output = yes
           clear_env = no
+          php_admin_flag[display_errors] = off
+          php_admin_flag[log_errors] = on
+          php_admin_value[error_log] = /proc/self/fd/2
+          php_admin_value[error_reporting] = E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED
           php_value[session.save_path] = /tmp/musee-sessions
         '';
         nginxConfig = pkgs.writeText "nginx.conf" ''
@@ -122,7 +126,8 @@
           text = ''
             export APP_CACHE_DIR="''${APP_CACHE_DIR:-/tmp/musee-cache}"
             export APP_LOG_DIR="''${APP_LOG_DIR:-/tmp/musee-log}"
-            mkdir -p "$APP_CACHE_DIR" "$APP_LOG_DIR" /tmp/musee-sessions /tmp/client-body /tmp/fastcgi
+            mkdir -p "$APP_CACHE_DIR" "$APP_LOG_DIR" /tmp/musee-sessions /tmp/client-body /tmp/fastcgi /var/log/nginx
+            chmod 1777 /tmp
             chown -R nobody:nobody "$APP_CACHE_DIR" "$APP_LOG_DIR" /tmp/musee-sessions /tmp/client-body /tmp/fastcgi
             php-fpm --fpm-config ${phpFpmConfig}
             exec nginx -c ${nginxConfig}
