@@ -86,6 +86,13 @@ EOH
         name     = "musee-lookout-staging"
         provider = "nomad"
         port     = "http"
+        tags = [
+          "traefik.enable=true",
+          "traefik.http.routers.musee-lookout-staging.entrypoints=nomad",
+          "traefik.http.routers.musee-lookout-staging.middlewares=musee-lookout-staging-noindex",
+          "traefik.http.routers.musee-lookout-staging.rule=Host(`staging.musee.sacha.house`)",
+          "traefik.http.middlewares.musee-lookout-staging-noindex.headers.customresponseheaders.X-Robots-Tag=noindex, nofollow",
+        ]
 
         check {
           name     = "HTTP health"

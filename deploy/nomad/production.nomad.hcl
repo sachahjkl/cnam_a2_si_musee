@@ -86,6 +86,11 @@ EOH
         name     = "musee-lookout-production"
         provider = "nomad"
         port     = "http"
+        tags = [
+          "traefik.enable=true",
+          "traefik.http.routers.musee-lookout-production.entrypoints=nomad",
+          "traefik.http.routers.musee-lookout-production.rule=Host(`musee.sacha.house`)",
+        ]
 
         check {
           name     = "HTTP health"
